@@ -421,11 +421,7 @@ impl<C: Chip> Process for ProcessStandard<'_, C> {
         ((self.flash.as_ptr() as usize) + self.header.get_protected_size() as usize) as *const u8
     }
 
-    fn get_command_permissions(
-        &self,
-        driver_num: usize,
-        offset: Option<usize>,
-    ) -> CommandPermissions {
+    fn get_command_permissions(&self, driver_num: usize, offset: usize) -> CommandPermissions {
         self.header.get_command_permissions(driver_num, offset)
     }
 
