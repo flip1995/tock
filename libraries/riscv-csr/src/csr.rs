@@ -1,6 +1,7 @@
 //! `ReadWriteRiscvCsr` type for RISC-V CSRs.
 
 use core::marker::PhantomData;
+use core::arch::asm;
 
 use tock_registers::fields::Field;
 use tock_registers::interfaces::{Readable, Writeable};

@@ -2,16 +2,9 @@ use core::fmt::Write;
 use core::panic::PanicInfo;
 use core::ptr::write_volatile;
 use core::str;
-use kernel::debug;
 use kernel::debug::IoWrite;
 
-use crate::CHIP;
-use crate::PROCESSES;
-use crate::PROCESS_PRINTER;
-
 struct Writer {}
-
-static mut WRITER: Writer = Writer {};
 
 impl Write for Writer {
     fn write_str(&mut self, s: &str) -> ::core::fmt::Result {
@@ -35,18 +28,7 @@ impl IoWrite for Writer {
 #[cfg(not(test))]
 #[no_mangle]
 #[panic_handler]
-pub unsafe extern "C" fn panic_fmt(pi: &PanicInfo) -> ! {
-    let writer = &mut WRITER;
-
-    debug::panic_print(
-        writer,
-        pi,
-        &rv32i::support::nop,
-        &PROCESSES,
-        &CHIP,
-        &PROCESS_PRINTER,
-    );
-
+pub unsafe extern "C" fn panic_fmt(_pi: &PanicInfo) -> ! {
     // By writing to address 0x80001009 we can exit the simulation.
     // So instead of blinking in a loop let's exit the simulation.
     write_volatile(0x8000_1009 as *mut u8, 20);

@@ -56,6 +56,9 @@ RUSTC_FLAGS ?= \
   -C relocation-model=static \
   -C link-arg=-nmagic \
   -C link-arg=-icf=all \
+  -C embed-bitcode \
+  -C lto \
+  -C virtual-function-elimination \
 
 # RISC-V-specific flags.
 ifneq ($(findstring riscv32i, $(TARGET)),)
